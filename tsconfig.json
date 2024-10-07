@@ -7,8 +7,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"] // Ensure this path is correct
   },
-  "include": ["./**/*.ts"],
+  "include": ["src/**/*.ts", "src/types/**/*.d.ts"], // Ensure this path is correct
   "exclude": ["node_modules"]
 }
