@@ -1,7 +1,7 @@
 // src/controller/user.ts
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import User, { IUser } from "../model/user";
+import User from "../model/user";
 import apiResponse from "../utils/apiResponse";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";

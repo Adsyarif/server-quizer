@@ -4,12 +4,12 @@ import "express-session";
 
 declare module "express-session" {
   interface SessionData {
-    userId?: string; // Adding userId as an optional property
+    userId?: string;
   }
 }
 
 declare module "express-serve-static-core" {
   interface Request {
-    session: SessionData & { userId?: string }; // Extend Request interface to include userId
+    session: SessionData & { userId?: string };
   }
 }
