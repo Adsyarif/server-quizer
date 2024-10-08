@@ -3,6 +3,50 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User, { IUser } from "../model/user";
 import apiResponse from "../utils/apiResponse";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const login: any = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      apiResponse(res, 404, "User does not exist");
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      apiResponse(res, 401, "Invalid credentials");
+      return;
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" }
+    );
+
+    apiResponse(res, 200, "Login successful", {
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        age: user.age,
+      },
+    });
+  } catch (error: any) {
+    apiResponse(res, 500, "An error occurred while logging in", {
+      error: error.message,
+    });
+  }
+};
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   const validatePassword = (password: string): boolean => {
